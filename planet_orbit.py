@@ -1,10 +1,8 @@
 import dash
+import plotly.graph_objs as go
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State, Event
-from plotly.graph_objs import *
-from scipy.stats import rayleigh
-from flask import Flask
 import numpy as np
 import pandas as pd
 import os
@@ -28,33 +26,24 @@ app.layout = html.Div([
             className='twelve columns wind-speed'),
         dcc.Interval(id='wind-speed-update', interval=1000, n_intervals=0),
     ], className='row wind-speed-row'),
+    html.Div([
+        dcc.Graph(id='scatter-with-slider', animate='true')
+    ])
 ])
 
 
 @app.callback(Output('wind-speed', 'figure'), [Input('wind-speed-update', 'n_intervals')])
-def gen_wind_speed(interval):
-    # now = dt.datetime.now()
-    # sec = now.second
-    # minute = now.minute
-    # hour = now.hour
-
-    # total_time = (hour * 3600) + (minute * 60) + (sec)
-
-    # con = sqlite3.connect("./Data/wind-data.db")
-    # df = pd.read_sql_query('SELECT Speed, SpeedError, Direction from Wind where\
-    #                         rowid > "{}" AND rowid <= "{}";'
-    #                         .format(total_time-200, total_time), con)
-
+def stream_random_numbers(interval):
     df = pd.DataFrame(np.random.randint(0, 100, size=(200, 2)),
                       columns=['Speed', 'SpeedError'])
 
-    trace = Scatter(
+    trace = go.Scatter(
         y=df['Speed'],
-        line=Line(
+        line=go.Line(
             color='#42C4F7'
         ),
         hoverinfo='skip',
-        error_y=ErrorY(
+        error_y=go.ErrorY(
             type='data',
             array=df['SpeedError'],
             thickness=1.5,
@@ -64,7 +53,7 @@ def gen_wind_speed(interval):
         mode='lines'
     )
 
-    layout = Layout(
+    layout = go.Layout(
         height=450,
         xaxis=dict(
             range=[0, 200],
@@ -86,7 +75,7 @@ def gen_wind_speed(interval):
             nticks=max(6, round(df['Speed'].iloc[-1]/10)),
             color='#fff'
         ),
-        margin=Margin(
+        margin=go.Margin(
             t=45,
             l=50,
             r=50
@@ -95,7 +84,34 @@ def gen_wind_speed(interval):
         plot_bgcolor='rgba(1,1,1,1)'
     )
 
-    return Figure(data=[trace], layout=layout)
+    return go.Figure(data=[trace], layout=layout)
+
+
+@app.callback(
+    dash.dependencies.Output('scatter-with-slider', 'figure'), [Input('wind-speed-update', 'n_intervals')])
+def move_planets(interval):
+    df = pd.DataFrame(np.random.randint(0, 100, size=(20, 2)),
+                      columns=['x', 'y'])
+    traces = []
+    # for i in df.sector.unique():
+    traces.append(go.Scatter(
+        x=df['x'],
+        y=df['y'],
+        mode='markers',
+        opacity=0.7,
+        marker={
+                'size': 15,
+                'line': {'width': 0.5, 'color': 'white'}
+            }
+        ))
+
+    layout = go.Layout(paper_bgcolor='rgba(1,1,1,1)',
+        plot_bgcolor='rgba(1,1,1,0)')
+
+    return {
+        'data': traces,
+        'layout': layout
+    }
 
 #
 # @app.callback(Output('wind-histogram', 'figure'),
