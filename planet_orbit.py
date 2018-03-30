@@ -16,75 +16,12 @@ app.layout = html.Div([
         html.Img(src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/logo/new-branding/dash-logo-by-plotly-stripe-inverted.png"),
     ], className='banner'),
     html.Div([
-        html.Div([
-            html.H3("WIND SPEED (mph)")
-        ],
-            className='Title'),
-        html.Div([
-            dcc.Graph(id='wind-speed'),
-        ],
-            className='twelve columns wind-speed'),
         dcc.Interval(id='wind-speed-update', interval=1000, n_intervals=0),
     ], className='row wind-speed-row'),
     html.Div([
         dcc.Graph(id='scatter-with-slider', animate='true')
     ])
 ])
-
-
-@app.callback(Output('wind-speed', 'figure'), [Input('wind-speed-update', 'n_intervals')])
-def stream_random_numbers(interval):
-    df = pd.DataFrame(np.random.randint(0, 100, size=(200, 2)),
-                      columns=['Speed', 'SpeedError'])
-
-    trace = go.Scatter(
-        y=df['Speed'],
-        line=go.Line(
-            color='#42C4F7'
-        ),
-        hoverinfo='skip',
-        error_y=go.ErrorY(
-            type='data',
-            array=df['SpeedError'],
-            thickness=1.5,
-            width=2,
-            color='#B4E8FC'
-        ),
-        mode='lines'
-    )
-
-    layout = go.Layout(
-        height=450,
-        xaxis=dict(
-            range=[0, 200],
-            showgrid=False,
-            showline=False,
-            zeroline=False,
-            fixedrange=True,
-            tickvals=[0, 50, 100, 150, 200],
-            ticktext=['200', '150', '100', '50', '0'],
-            title='Time Elapsed (sec)',
-            color='#fff'
-        ),
-        yaxis=dict(
-            range=[min(0, min(df['Speed'])),
-                   max(45, max(df['Speed'])+max(df['SpeedError']))],
-            showline=False,
-            fixedrange=True,
-            zeroline=False,
-            nticks=max(6, round(df['Speed'].iloc[-1]/10)),
-            color='#fff'
-        ),
-        margin=go.Margin(
-            t=45,
-            l=50,
-            r=50
-        ),
-        paper_bgcolor='rgba(1,1,1,1)',
-        plot_bgcolor='rgba(1,1,1,1)'
-    )
-
-    return go.Figure(data=[trace], layout=layout)
 
 
 @app.callback(
@@ -105,8 +42,10 @@ def move_planets(interval):
             }
         ))
 
-    layout = go.Layout(paper_bgcolor='rgba(1,1,1,1)',
-        plot_bgcolor='rgba(1,1,1,0)')
+    layout = go.Layout(paper_bgcolor='rgba(0,0,0,0)',
+                       plot_bgcolor='rgba(0,0,0,0)',
+                       
+                       )
 
     return {
         'data': traces,
