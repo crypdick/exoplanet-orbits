@@ -61,7 +61,9 @@ def move_planets(interval):
         ))
 
     layout = go.Layout(paper_bgcolor='rgba(0,0,0,0)',
-                       plot_bgcolor='rgba(0,0,0,0)'
+                       plot_bgcolor='rgba(0,0,0,0)',
+                       xaxis=dict(showgrid=False),
+                       yaxis=dict(showgrid=False)
                        )
 
     return {
