@@ -200,6 +200,7 @@ for css in external_css:
 
 
 app.css.append_css({'external_url': 'https://codepen.io/plotly/pen/YeqjLb.css'})
+app.css.append_css({'external_url': 'https://raw.githubusercontent.com/crypdick/exoplanet-orbits/master/exoplanet.css'})
 
 if 'DYNO' in os.environ:
     app.scripts.append_script({
