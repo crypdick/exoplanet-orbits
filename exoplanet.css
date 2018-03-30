@@ -104,6 +104,8 @@ body {
   line-height: 1.6;
   font-weight: 400;
   font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-image: url("https://raw.githubusercontent.com/crypdick/exoplanet-orbits/master/stars-tile.jpg");
+  background-repeat: repeat;
   color: rgb(50, 50, 50); }
 
 
