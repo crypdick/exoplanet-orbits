@@ -6,6 +6,7 @@ from dash.dependencies import Input, Output, State, Event
 import numpy as np
 import pandas as pd
 import os
+import itertools
 
 app = dash.Dash('streaming-wind-app')
 server = app.server
@@ -23,17 +24,17 @@ app.layout = html.Div([
     ])
 ])
 
+x_data_gen = itertools.cycle(np.random.randint(0, 100, size=(3,2)))
+y_data_gen = itertools.cycle(np.random.randint(0, 100, size=(3,2)))
 
 @app.callback(
     dash.dependencies.Output('scatter-with-slider', 'figure'), [Input('wind-speed-update', 'n_intervals')])
 def move_planets(interval):
-    df = pd.DataFrame(np.random.randint(0, 100, size=(20, 2)),
-                      columns=['x', 'y'])
     traces = []
     # for i in df.sector.unique():
     traces.append(go.Scatter(
-        x=df['x'],
-        y=df['y'],
+        x=x_data_gen.__next__(),
+        y=y_data_gen.__next__(),
         mode='markers',
         opacity=0.7,
         marker={
@@ -43,8 +44,7 @@ def move_planets(interval):
         ))
 
     layout = go.Layout(paper_bgcolor='rgba(0,0,0,0)',
-                       plot_bgcolor='rgba(0,0,0,0)',
-                       
+                       plot_bgcolor='rgba(0,0,0,0)'
                        )
 
     return {
