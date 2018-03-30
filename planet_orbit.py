@@ -2,15 +2,12 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State, Event
-import plotly.plotly as py
 from plotly.graph_objs import *
 from scipy.stats import rayleigh
 from flask import Flask
 import numpy as np
 import pandas as pd
 import os
-import sqlite3
-import datetime as dt
 
 app = dash.Dash('streaming-wind-app')
 server = app.server
@@ -23,10 +20,12 @@ app.layout = html.Div([
     html.Div([
         html.Div([
             html.H3("WIND SPEED (mph)")
-        ], className='Title'),
+        ],
+            className='Title'),
         html.Div([
             dcc.Graph(id='wind-speed'),
-        ], className='twelve columns wind-speed'),
+        ],
+            className='twelve columns wind-speed'),
         dcc.Interval(id='wind-speed-update', interval=1000, n_intervals=0),
     ], className='row wind-speed-row'),
 ])
