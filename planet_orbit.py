@@ -198,6 +198,9 @@ external_css = ["https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.
 for css in external_css:
     app.css.append_css({"external_url": css})
 
+
+app.css.append_css({'external_url': 'https://codepen.io/plotly/pen/YeqjLb.css'})
+
 if 'DYNO' in os.environ:
     app.scripts.append_script({
         'external_url': 'https://cdn.rawgit.com/chriddyp/ca0d8f02a1659981a0ea7f013a378bbd/raw/e79f3f789517deec58f41251f7dbb6bee72c44ab/plotly_ga.js'
