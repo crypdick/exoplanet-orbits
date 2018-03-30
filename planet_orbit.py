@@ -27,14 +27,31 @@ app.layout = html.Div([
 x_data_gen = itertools.cycle(np.random.randint(0, 100, size=(3,2)))
 y_data_gen = itertools.cycle(np.random.randint(0, 100, size=(3,2)))
 
+def planet_generator(period, semi):
+    time = 0.
+    period += 10.
+    while True:
+        # put the planets in the correct location
+        phase = 2. * np.pi * time / period * 10
+        print("phase {}".format(phase))
+        xs, ys = semi * np.cos(phase), semi * np.sin(phase)
+        time += 0.5
+        yield xs, ys
+
+sample_periods = np.array([300., 400.])
+sample_semis = np.array([1., 2.])
+sample_planet = planet_generator(sample_periods, sample_semis)
+
 @app.callback(
     dash.dependencies.Output('scatter-with-slider', 'figure'), [Input('wind-speed-update', 'n_intervals')])
 def move_planets(interval):
     traces = []
     # for i in df.sector.unique():
-    traces.append(go.Scatter(
-        x=x_data_gen.__next__(),
-        y=y_data_gen.__next__(),
+    xs, ys = sample_planet.__next__()
+    print(xs, ys)
+    traces.append(go.Scattergl(
+        x=xs,
+        y=ys,
         mode='markers',
         opacity=0.7,
         marker={
