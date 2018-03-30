@@ -19,7 +19,7 @@ app.layout = html.Div([
         dcc.Interval(id='wind-speed-update', interval=1000, n_intervals=0),
     ], className='row wind-speed-row'),
     html.Div([
-        dcc.Graph(id='scatter-with-slider', animate='true')
+        dcc.Graph(id='scatter-with-slider')
     ])
 ])
 
