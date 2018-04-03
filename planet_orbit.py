@@ -60,23 +60,30 @@ def mk_trace_generator(planet, in_habitable_zone=False):
         # yield graph_object
 
 
-planet1 = (6., 1, 15., 500.)
-planet2 = (12., 3.5, 15., 500.)
-planets = [planet1, planet2]
+planet1 = (12., 5., 10., 500.)
+planet2 = (8., 6., 25., 500.)
+planet3 = (12., 10., 20., 500.)
+planet4 = (12., 12., 30., 500.)
+planet5 = (2., 17., 35., 500.)
+planet6 = (1., 20., 25., 500.)
+planets = [planet1, planet2, planet3, planet4, planet5, planet6]
 n_planets = len(planets)
 
 trace_generators = [mk_trace_generator(planet) for planet in planets]
 
-
+# TODO maybe instead of generating 1 timept we can generate a small window and take advantage
+# of vectorized ops
 @app.callback(
     Output('planet-orbits', 'figure'),
     [Input('interval-component', 'n_intervals')])
 def move_planets(interval):
+    # +1 for the host star
     xs = np.empty(n_planets+1)
     ys = np.empty(n_planets+1)
     sizes = np.empty(n_planets+1)
     colors = []
     payload = [gen.__next__() for gen in trace_generators]
+    # TODO: instead of grow
     for i, load in enumerate(payload):
         x, y, size, color = load
         xs[i], ys[i], sizes[i] = x,y,size
@@ -85,7 +92,7 @@ def move_planets(interval):
     # host star
     xs[-1] = 0
     ys[-1] = 0
-    sizes[-1] = 100
+    sizes[-1] = 15  # star size TODO: grab from data
     colors.append('rgba(229, 196, 31, 1)')
     # traces.append(go.Scatter(
     #     x=np.array(0),
@@ -104,11 +111,11 @@ def move_planets(interval):
                        plot_bgcolor='rgba(0,0,0,0)',
                        xaxis=dict(showgrid=False,
                                   zeroline=False,
-                                  range=[-5, 5]),
+                                  range=[-20, 20]),
                        yaxis=dict(showgrid=False,
                                   zeroline=False,
                                   scaleanchor='x',  # equal axis ratios
-                                  range=[-5, 5])
+                                  range=[-20, 20])
                        )
 
     return go.Figure(data= [trace], layout= layout)
