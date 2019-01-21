@@ -43,7 +43,7 @@ def mk_trace_generator(planet, in_habitable_zone=False):
     while True:
         phase = 2. * np.pi * time / period
         xs, ys = semi * np.cos(phase), semi * np.sin(phase)
-        time += 0.23
+        time += 0.1
         yield (xs, ys, size, color)
         # TODO test making the go downstairs
         # graph_object = go.Scatter(
@@ -60,12 +60,12 @@ def mk_trace_generator(planet, in_habitable_zone=False):
         # yield graph_object
 
 
-planet1 = (12., 5., 10., 500.)
-planet2 = (8., 6., 25., 500.)
-planet3 = (12., 10., 20., 500.)
+planet1 = (3, 5., 10., 500.)
+planet2 = (4, 6., 25., 500.)
+planet3 = (10., 10., 20., 500.)
 planet4 = (12., 12., 30., 500.)
-planet5 = (2., 17., 35., 500.)
-planet6 = (1., 20., 25., 500.)
+planet5 = (50, 17., 35., 500.)
+planet6 = (60, 20., 25., 500.)
 planets = [planet1, planet2, planet3, planet4, planet5, planet6]
 n_planets = len(planets)
 
