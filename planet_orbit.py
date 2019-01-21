@@ -71,8 +71,7 @@ n_planets = len(planets)
 
 trace_generators = [mk_trace_generator(planet) for planet in planets]
 
-# TODO maybe instead of generating 1 timept we can generate a small window and take advantage
-# of vectorized ops
+
 @app.callback(
     Output('planet-orbits', 'figure'),
     [Input('interval-component', 'n_intervals')])
@@ -83,7 +82,6 @@ def move_planets(interval):
     sizes = np.empty(n_planets+1)
     colors = []
     payload = [gen.__next__() for gen in trace_generators]
-    # TODO: instead of grow
     for i, load in enumerate(payload):
         x, y, size, color = load
         xs[i], ys[i], sizes[i] = x,y,size
@@ -92,7 +90,7 @@ def move_planets(interval):
     # host star
     xs[-1] = 0
     ys[-1] = 0
-    sizes[-1] = 15  # star size TODO: grab from data
+    sizes[-1] = 15
     colors.append('rgba(229, 196, 31, 1)')
     # traces.append(go.Scatter(
     #     x=np.array(0),
